@@ -4,12 +4,12 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { ExplorerLink } from '../cluster/cluster-ui';
 import { WalletButton } from '../solana/solana-provider';
 import { AppHero, ellipsify } from '../ui/ui-layout';
-import { useBasicProgram } from './basic-data-access';
-import { BasicCreate, BasicProgram } from './basic-ui';
+import { useTrustProgram } from './trust-data-access';
+import { TrustCreate, TrustList } from './trust-ui';
 
-export default function BasicFeature() {
+export default function TrustFeature() {
   const { publicKey } = useWallet();
-  const { programId } = useBasicProgram();
+  const { programId } = useTrustProgram();
 
   return publicKey ? (
     <div>
@@ -23,9 +23,9 @@ export default function BasicFeature() {
             label={ellipsify(programId.toString())}
           />
         </p>
-        <BasicCreate />
+        <TrustCreate />
       </AppHero>
-      <BasicProgram />
+      <TrustList />
     </div>
   ) : (
     <div className="max-w-4xl mx-auto">
