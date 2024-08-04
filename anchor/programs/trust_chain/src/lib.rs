@@ -9,19 +9,30 @@ pub mod trust_chain {
     pub fn create_business(
         ctx: Context<CreateBusiness>,
         name: String,
-        avatar: String,
+        address: String,
+        profile: String,
+        cover: String,
+        latitude: i64,
+        longitude: i64,
         category: String,
-        url: String,
         //bump: u8
     ) -> Result<()> {
         let business_entry = &mut ctx.accounts.business_entry;
         business_entry.owner = ctx.accounts.owner.key();
         business_entry.name = name;
-        business_entry.avatar = avatar;
+        business_entry.address = address;
+        business_entry.profile = profile;
+        business_entry.cover = cover;
+        business_entry.latitude = latitude;
+        business_entry.longitude = longitude;
         business_entry.category = category;
-        business_entry.url = url;
         business_entry.created_at = Clock::get().unwrap().unix_timestamp;
         //business.bump = bump;
+        Ok(())
+    }
+
+    pub fn delete_business(_ctx: Context<DeleteBusiness>, name: String) -> Result<()> {
+        msg!("Business named {} deleted", name);
         Ok(())
     }
 }
@@ -40,14 +51,20 @@ pub mod trust_chain {
 #[derive(InitSpace)]
 pub struct BusinessEntryState {
     pub owner: Pubkey,
-    #[max_len(20)]
+    #[max_len(255)]
     pub name: String,
-    #[max_len(20)]
-    pub avatar: String,
-    #[max_len(20)]
+    #[max_len(255)]
+    pub address: String,
+    #[max_len(255)]
+    pub profile: String,
+    #[max_len(255)]
+    pub cover: String,
+    // Store latitude and longitude as fixed-point integers
+    pub latitude: i64,
+    pub longitude: i64,
+    #[max_len(255)]
     pub category: String,
-    #[max_len(20)]
-    pub url: String,
+    #[max_len(255)]
     pub created_at: i64,
     //pub bump: u8,
 }
@@ -72,6 +89,21 @@ pub struct CreateBusiness<'info> {
         bump,
         payer = owner,
         space = 8 + BusinessEntryState::INIT_SPACE,
+    )]
+    pub business_entry: Account<'info, BusinessEntryState>,
+    #[account(mut)]
+    pub owner: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+#[instruction(name: String)]
+pub struct DeleteBusiness<'info> {
+    #[account(
+        mut,
+        seeds = [name.as_bytes(), owner.key().as_ref()],
+        bump,
+        close= owner,
     )]
     pub business_entry: Account<'info, BusinessEntryState>,
     #[account(mut)]

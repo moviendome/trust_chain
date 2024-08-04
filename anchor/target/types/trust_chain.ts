@@ -58,15 +58,73 @@ export type TrustChain = {
           "type": "string"
         },
         {
-          "name": "avatar",
+          "name": "address",
           "type": "string"
+        },
+        {
+          "name": "profile",
+          "type": "string"
+        },
+        {
+          "name": "cover",
+          "type": "string"
+        },
+        {
+          "name": "latitude",
+          "type": "i64"
+        },
+        {
+          "name": "longitude",
+          "type": "i64"
         },
         {
           "name": "category",
           "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "deleteBusiness",
+      "discriminator": [
+        99,
+        122,
+        133,
+        17,
+        244,
+        83,
+        107,
+        134
+      ],
+      "accounts": [
+        {
+          "name": "businessEntry",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "arg",
+                "path": "name"
+              },
+              {
+                "kind": "account",
+                "path": "owner"
+              }
+            ]
+          }
         },
         {
-          "name": "url",
+          "name": "owner",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
           "type": "string"
         }
       ]
@@ -102,15 +160,27 @@ export type TrustChain = {
             "type": "string"
           },
           {
-            "name": "avatar",
+            "name": "address",
             "type": "string"
+          },
+          {
+            "name": "profile",
+            "type": "string"
+          },
+          {
+            "name": "cover",
+            "type": "string"
+          },
+          {
+            "name": "latitude",
+            "type": "i64"
+          },
+          {
+            "name": "longitude",
+            "type": "i64"
           },
           {
             "name": "category",
-            "type": "string"
-          },
-          {
-            "name": "url",
             "type": "string"
           },
           {

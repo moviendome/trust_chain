@@ -16,9 +16,12 @@ import { useTransactionToast } from '../ui/ui-layout';
 
 interface EntryArgs {
   name: string;
-  avatar: string;
+  address: string;
+  profile: string;
+  cover: string;
+  latitude: BigInt,
+  longitude: BigInt,
   category: string;
-  url: string;
   owner: PublicKey;
 };
 
@@ -46,13 +49,13 @@ export function useTrustProgram() {
   // Use publicKey of the wallet connected to the Frontend
   const createBusiness = useMutation<string, error, EntryArgs>({
     mutationKey: ['businessEntry', 'create', { cluster }],
-    mutationFn: async ({name, avatar, category, url, owner}) => {
+    mutationFn: async ({name, address, profile, cover, latitude, longitude, category, owner}) => {
       const [businessEntryState] = await PublicKey.findProgramAddress(
         [Buffer.from(name), owner.toBuffer()],
         programId,
       )
 
-      return program.methods.createBusiness(name, avatar, category, url).accounts({ businessEntry: businessEntryState}).rpc();
+      return program.methods.createBusiness(name, address, profile, cover, latitude, longitude, category).accounts({ businessEntry: businessEntryState}).rpc();
     },
     onSuccess: (signature) => {
       transactionToast(signature);
@@ -99,10 +102,10 @@ export function useTrustProgramAccount({ account }: { account: PublicKey }) {
     onError: () => toast.error('Failed to initialize account'),
   });
 
-  const deleteEntry = useMutation({
+  const deleteBusiness = useMutation({
     mutationKey: ['business', 'delete', { cluster, account }],
     mutationFn: (name: string) =>
-      program.methods.deleteEntry(name).accounts({ businessEntry: account }).rpc(),
+      program.methods.deleteBusiness(name).accounts({ businessEntry: account }).rpc(),
     onSuccess: (tx) => {
       transactionToast(tx);
       return accounts.refetch();
@@ -112,6 +115,6 @@ export function useTrustProgramAccount({ account }: { account: PublicKey }) {
   return {
     accountQuery,
     updateEntry,
-    deleteEntry,
+    deleteBusiness,
   };
 }
