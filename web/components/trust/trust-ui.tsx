@@ -13,18 +13,18 @@ import { useWallet } from '@solana/wallet-adapter-react';
 export function TrustCreate() {
   const { createBusiness} = useTrustProgram();
   const { publicKey } = useWallet();
+  const [category, setCategory] = useState("");
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [profile, setProfile] = useState("");
   const [cover, setCover] = useState("");
-  const [category, setCategory] = useState("");
   const [url, setUrl] = useState("");
 
   const isFormValid = name.trim() !== "";
 
   const handleSubmit = () => {
     if (publicKey && isFormValid) {
-      createBusiness.mutateAsync({ name, address, profile, cover, category, owner: publicKey });
+      createBusiness.mutateAsync({ category, name, address, profile, cover, owner: publicKey });
     }
   };
 
@@ -96,7 +96,7 @@ export function TrustCreate() {
 }
 
 export function TrustList() {
-  const { accounts, getProgramAccount } = useTrustProgram();
+  const { accounts, getProgramAccount, setCategoryFilter } = useTrustProgram();
 
   if (getProgramAccount.isLoading) {
     return <span className="loading loading-spinner loading-lg"></span>;
@@ -113,13 +113,13 @@ export function TrustList() {
   }
   return (
     <div>
-      <div className="bg-base-300 rounded-b-box rounded-se-box relative overflow-x-auto">
-        <div className="preview bg-base-100 rounded-b-box rounded-se-box flex min-h-[6rem] min-w-[18rem] max-w-4xl flex-wrap items-center justify-center gap-2 overflow-x-hidden bg-cover bg-top p-4">
-            {["Brunch", "Burger", "Chinese", "Coffee", "Pizza", "Ramen", "Thai"]
+      <div className="rounded-b-box rounded-se-box relative overflow-x-auto">
+        <div className="preview bg-base-100 rounded-b-box rounded-se-box flex min-h-[6rem] min-w-[18rem] flex-wrap items-center justify-center gap-2 overflow-x-hidden bg-cover bg-top p-4">
+            {["All", "Brunch", "Burger", "Chinese", "Coffee", "Pizza", "Ramen", "Thai"]
 .map((category, index) => (
-              <div key={index} className="badge badge-outline">
+              <button key={index} onClick={() => setCategoryFilter(category)} className="badge badge-outline">
                 {category}
-              </div>
+              </button>
             ))}
         </div>
       </div>
@@ -127,7 +127,7 @@ export function TrustList() {
         {accounts.isLoading ? (
           <span className="loading loading-spinner loading-lg"></span>
         ) : accounts.data?.length ? (
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
             {accounts.data?.map((account) => (
               <BusinessCard
                 key={account.publicKey.toString()}
@@ -189,31 +189,31 @@ function BusinessCard({ account }: { account: PublicKey }) {
       <div className="card-body">
         <h2 className="card-title">
           {accountQuery.data?.name}
-          <div className="badge badge-secondary">NEW</div>
+          {/* <div className="badge badge-secondary">NEW</div> */}
         </h2>
         <p>{accountQuery.data?.address}</p>
         <div className="card-actions justify-end">
           <div className="badge badge-outline">{accountQuery.data?.category}</div>
         </div>
-        <button
-          className="btn btn-xs btn-secondary btn-outline mt-6"
-          onClick={() => {
-            if (
-              !window.confirm(
-                'Are you sure you want to close this account?'
-              )
-            ) {
-              return;
-            }
-            const name = accountQuery.data?.name;
-            if (name) {
-              return deleteBusiness.mutateAsync(name);
-            }
-          }}
-          disabled={deleteBusiness.isPending}
-        >
-          Delete
-        </button>
+        {/* <button */}
+        {/*   className="btn btn-xs btn-secondary btn-outline mt-6" */}
+        {/*   onClick={() => { */}
+        {/*     if ( */}
+        {/*       !window.confirm( */}
+        {/*         'Are you sure you want to close this account?' */}
+        {/*       ) */}
+        {/*     ) { */}
+        {/*       return; */}
+        {/*     } */}
+        {/*     const name = accountQuery.data?.name; */}
+        {/*     if (name) { */}
+        {/*       return deleteBusiness.mutateAsync(name); */}
+        {/*     } */}
+        {/*   }} */}
+        {/*   disabled={deleteBusiness.isPending} */}
+        {/* > */}
+        {/*   Delete */}
+        {/* </button> */}
       </div>
     </div>
     // <div className="card card-bordered border-base-300 border-4 text-neutral-content">

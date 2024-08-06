@@ -150,6 +150,10 @@
             "type": "pubkey"
           },
           {
+            "name": "category",
+            "type": "string"
+          },
+          {
             "name": "name",
             "type": "string"
           },
@@ -172,10 +176,6 @@
           {
             "name": "longitude",
             "type": "i64"
-          },
-          {
-            "name": "category",
-            "type": "string"
           },
           {
             "name": "created_at",

@@ -52,6 +52,8 @@ pub mod trust_chain {
 pub struct BusinessEntryState {
     pub owner: Pubkey,
     #[max_len(255)]
+    pub category: String,
+    #[max_len(255)]
     pub name: String,
     #[max_len(255)]
     pub address: String,
@@ -62,9 +64,6 @@ pub struct BusinessEntryState {
     // Store latitude and longitude as fixed-point integers
     pub latitude: i64,
     pub longitude: i64,
-    #[max_len(255)]
-    pub category: String,
-    #[max_len(255)]
     pub created_at: i64,
     //pub bump: u8,
 }

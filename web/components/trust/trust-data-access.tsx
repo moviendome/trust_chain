@@ -1,5 +1,6 @@
 'use client';
 
+import React, { useState, useMemo } from 'react';
 import {
   getTrustProgram,
   getTrustProgramId,
@@ -8,11 +9,11 @@ import { Program } from '@coral-xyz/anchor';
 import { useConnection } from '@solana/wallet-adapter-react';
 import { Cluster, PublicKey } from '@solana/web3.js';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useMemo } from 'react';
 import toast from 'react-hot-toast';
 import { useCluster } from '../cluster/cluster-data-access';
 import { useAnchorProvider } from '../solana/solana-provider';
 import { useTransactionToast } from '../ui/ui-layout';
+import bs58 from 'bs58';
 
 interface EntryArgs {
   name: string;
@@ -36,9 +37,27 @@ export function useTrustProgram() {
   );
   const program = getTrustProgram(provider);
 
+  const [categoryFilter, setCategoryFilter] = useState('');
+
+  console.log(categoryFilter);
+
   const accounts = useQuery({
-    queryKey: ['trust', 'all', { cluster }],
-    queryFn: () => program.account.businessEntryState.all(),
+    queryKey: ['trust', 'all', { cluster, categoryFilter }],
+    // queryFn: () => program.account.businessEntryState.all(),
+    queryFn: () => {
+      if (categoryFilter === 'All') {
+        return program.account.businessEntryState.all();
+      }
+      return program.account.businessEntryState.all([
+        {
+          memcmp: {
+            offset: 8 + 32 + 4, // Adjust the offset if necessary
+            bytes: bs58.encode(Buffer.from(categoryFilter)),
+          },
+        },
+      ]);
+    },
+    // enabled: !!categoryFilter, // Ensure the query only runs if a category is provided
   });
 
   const getProgramAccount = useQuery({
@@ -72,6 +91,7 @@ export function useTrustProgram() {
     accounts,
     getProgramAccount,
     createBusiness,
+    setCategoryFilter,
   };
 }
 

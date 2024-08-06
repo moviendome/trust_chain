@@ -156,6 +156,10 @@ export type TrustChain = {
             "type": "pubkey"
           },
           {
+            "name": "category",
+            "type": "string"
+          },
+          {
             "name": "name",
             "type": "string"
           },
@@ -178,10 +182,6 @@ export type TrustChain = {
           {
             "name": "longitude",
             "type": "i64"
-          },
-          {
-            "name": "category",
-            "type": "string"
           },
           {
             "name": "createdAt",

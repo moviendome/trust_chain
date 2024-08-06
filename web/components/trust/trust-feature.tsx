@@ -14,8 +14,8 @@ export default function TrustFeature() {
   return publicKey ? (
     <div>
       <AppHero
-        title="Basic"
-        subtitle={'Run the program by clicking the "Run program" button.'}
+        title="TrustChain"
+        subtitle={'Verified Reviews of Your Favorite Places on Solana'}
       >
         <p className="mb-6">
           <ExplorerLink
