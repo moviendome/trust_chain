@@ -1,7 +1,7 @@
 'use client';
 
 import { Keypair } from '@solana/web3.js';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ellipsify } from '../ui/ui-layout';
 import { ExplorerLink } from '../cluster/cluster-ui';
 import {
@@ -11,7 +11,7 @@ import {
 import { useWallet } from '@solana/wallet-adapter-react';
 
 export function TrustCreate() {
-  const { createBusiness} = useTrustProgram();
+  const { createBusiness } = useTrustProgram();
   const { publicKey } = useWallet();
   const [category, setCategory] = useState("");
   const [name, setName] = useState("");
@@ -153,21 +153,44 @@ function BusinessCard({ account }: { account: PublicKey }) {
     deleteBusiness,
   } = useTrustProgramAccount({ account });
 
+  const { reviewAccounts, createReview, setBusinessFilter } = useTrustProgram();
+
   const { publicKey } = useWallet();
   const [avatar, setAvatar] = useState("");
   const name = accountQuery.data?.name;
+  const [business, setBusiness] = useState("");
+  // setBusinessFilter(account.toString());
+
+  useEffect(() => {
+    setBusinessFilter(account.toString());
+  }, [name]); // This effect depends on newBusinessFilter
 
   const isFormValid = avatar.trim() !== "";
 
   const handleSubmit = () => {
-    if (publicKey && isFormValid && namme) {
+    if (publicKey && isFormValid && name) {
       updateEntry.mutateAsync({ name, avatar, owner: publicKey });
     }
+  };
+
+  const handleSubmitReview = () => {
+    const title = "My third awesome review";
+    const rating = 3;
+    const comment = "Quiet, good coffee & stuning view!";
+    const business = account.toString();
+    // console.log(business);
+    createReview.mutateAsync({ title, rating, comment, business, owner: publicKey });
   };
 
   if (!publicKey) {
     return <p>Connect your wallet</p>
   }
+
+  // reviewAccounts.data?.forEach((review) => {
+  //   console.log(review?.account?.rating);
+  // });
+
+  const rating = reviewAccounts.data ? reviewAccounts.data.reduce((sum, review) => sum + review?.account.rating, 0) / reviewAccounts.data.length : 0;
 
   return accountQuery.isLoading ? (
     <span className="loading loading-spinner loading-lg"></span>
@@ -189,12 +212,22 @@ function BusinessCard({ account }: { account: PublicKey }) {
       <div className="card-body">
         <h2 className="card-title">
           {accountQuery.data?.name}
-          {/* <div className="badge badge-secondary">NEW</div> */}
+          {/* <div className="badge badge-secondary">{reviewAccounts.data?.length}</div> */}
+            { !isNaN(rating) && (
+              <div className="badge badge-secondary">{parseFloat(rating.toFixed(1))}</div>
+            )}
         </h2>
         <p>{accountQuery.data?.address}</p>
+        <p>{ellipsify(account.toString())}</p>
         <div className="card-actions justify-end">
           <div className="badge badge-outline">{accountQuery.data?.category}</div>
         </div>
+        <button
+          className="btn btn-xs btn-secondary btn-outline mt-6"
+          onClick={() => { handleSubmitReview() }}
+        >
+          Rate!
+        </button>
         {/* <button */}
         {/*   className="btn btn-xs btn-secondary btn-outline mt-6" */}
         {/*   onClick={() => { */}

@@ -38,8 +38,9 @@ export function useTrustProgram() {
   const program = getTrustProgram(provider);
 
   const [categoryFilter, setCategoryFilter] = useState('');
+  const [businessFilter, setBusinessFilter] = useState('');
 
-  console.log(categoryFilter);
+  // console.log(categoryFilter);
 
   const accounts = useQuery({
     queryKey: ['trust', 'all', { cluster, categoryFilter }],
@@ -85,12 +86,48 @@ export function useTrustProgram() {
     },
   });
 
+  const reviewAccounts = useQuery({
+    queryKey: ['trust', 'all', { cluster, businessFilter }],
+    queryFn: () => {
+      return program.account.reviewEntryState.all([
+        {
+          memcmp: {
+            offset: 8, // Discriminator.
+            bytes: businessFilter,
+          }
+        },
+      ]);
+    },
+  });
+
+  const createReview = useMutation<string, error, ReviewArgs>({
+    mutationKey: ['reviewEntry', 'create', { cluster }],
+    mutationFn: async ({title, rating, business, owner}) => {
+      const [reviewEntryState] = await PublicKey.findProgramAddress(
+        [Buffer.from(title), owner.toBuffer()],
+        programId,
+      )
+
+      return program.methods.createReview(title, rating, business).accounts({ reviewEntry: reviewEntryState, business: business}).rpc();
+    },
+    onSuccess: (signature) => {
+      transactionToast(signature);
+      return accounts.refetch();
+    },
+    onError: (error) => {
+      toast.error(`Failed to create review entry: ${error.message}`);
+    },
+  });
+
   return {
     program,
     programId,
     accounts,
     getProgramAccount,
     createBusiness,
+    reviewAccounts,
+    createReview,
+    setBusinessFilter,
     setCategoryFilter,
   };
 }
