@@ -1,7 +1,7 @@
 'use client';
 
 import React, { memo } from 'react';
-import { Hero, Categories } from '@/ui';
+import { Hero } from '@/ui';
 
 const Landing = () => (
   <div>

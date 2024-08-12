@@ -1,5 +1,7 @@
 'use client';
 
+import { useWallet } from '@solana/wallet-adapter-react';
+import { useTrustProgram } from '../../components/trust/trust-data-access';
 import { WalletButton } from '../solana/solana-provider';
 import * as React from 'react';
 import { ReactNode, Suspense, useEffect, useRef } from 'react';
@@ -24,26 +26,40 @@ export function UiLayout({
 }) {
   const pathname = usePathname();
 
+  const { publicKey } = useWallet();
+  const { programId } = useTrustProgram();
+
   return (
     <div className="h-full flex flex-col">
       { pathname !== "/" && (
         <div className="navbar bg-base-300 text-neutral-content flex-col md:flex-row space-y-2 md:space-y-0">
-          <div className="flex-1">
+          <div className="flex-1 align-center">
             <Link className="btn btn-ghost normal-case text-xl" href="/">
-              <img className="h-4 md:h-6" alt="Logo" src="/logo.png" />
+              <div className="rating rating rating-half">
+                <input type="radio" name="rating-10" className="rating-hidden" />
+                <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-1 bg-green-500" />
+                <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-2 bg-green-500" />
+                <input
+                  type="radio"
+                  name="rating-10"
+                  className="mask mask-star-2 mask-half-1 bg-green-500"
+                  defaultChecked />
+                <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-2 bg-green-500" />
+                <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-1 bg-green-500" />
+                <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-2 bg-green-500" />
+                <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-1 bg-green-500" />
+                <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-2 bg-green-500" />
+                <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-1 bg-green-500" />
+                <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-2 bg-green-500" />
+              </div>
+              <div className=''>Trust Chain</div>
             </Link>
-            <ul className="menu menu-horizontal px-1 space-x-2">
-              {links.map(({ label, path }) => (
-                <li key={path}>
-                  <Link
-                    className={pathname.startsWith(path) ? 'active' : ''}
-                    href={path}
-                  >
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <span className='text-xs'>
+              <ExplorerLink
+                path={`account/${programId}`}
+                label={ellipsify(programId.toString())}
+              />
+            </span>
           </div>
           <div className="flex-none space-x-2">
             <WalletButton />

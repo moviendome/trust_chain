@@ -48,7 +48,7 @@ const Hero = () => {
               className='btn btn-primary'
               href='/trust'
             >
-              Demo
+              Try the Demo
             </Link>
           </div>
         </div>
@@ -57,8 +57,8 @@ const Hero = () => {
       <div className='my-10'>
         <h2 className='text-4xl font-bold text-center'>Why Reviews on Blockchain</h2>
         <div className="grid mx-6 md:mx-0 my-10 md:grid-cols-3 gap-8">
-          { feature.map((item) => (
-            <div className="card max-w-96 bg-neutral shadow-xl">
+          { feature.map((item, index) => (
+            <div key={index} className="card max-w-96 bg-neutral shadow-xl">
               <div className="card-body">
                 <h2 className="card-title">{ item.title }</h2>
                 <p>{ item.content }</p>

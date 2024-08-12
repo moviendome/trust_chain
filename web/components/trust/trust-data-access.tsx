@@ -129,6 +129,7 @@ export function useTrustProgram() {
     createReview,
     setBusinessFilter,
     setCategoryFilter,
+    categoryFilter,
   };
 }
 

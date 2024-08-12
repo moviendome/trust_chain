@@ -10,6 +10,8 @@ import {
 } from './trust-data-access';
 import { useWallet } from '@solana/wallet-adapter-react';
 
+import { Categories } from '@/ui';
+
 export function TrustCreate() {
   const { createBusiness } = useTrustProgram();
   const { publicKey } = useWallet();
@@ -96,7 +98,10 @@ export function TrustCreate() {
 }
 
 export function TrustList() {
-  const { accounts, getProgramAccount, setCategoryFilter } = useTrustProgram();
+  const { accounts, getProgramAccount, categoryFilter, setCategoryFilter } = useTrustProgram();
+
+  let currentCategory = categoryFilter ? categoryFilter : 'All';
+  console.log(currentCategory)
 
   if (getProgramAccount.isLoading) {
     return <span className="loading loading-spinner loading-lg"></span>;
@@ -114,14 +119,22 @@ export function TrustList() {
   return (
     <div>
       <div className="rounded-b-box rounded-se-box relative overflow-x-auto">
-        <div className="preview bg-base-100 rounded-b-box rounded-se-box flex min-h-[6rem] min-w-[18rem] flex-wrap items-center justify-center gap-2 overflow-x-hidden bg-cover bg-top p-4">
-            {["All", "Brunch", "Burger", "Chinese", "Coffee", "Pizza", "Ramen", "Thai"]
-.map((category, index) => (
-              <button key={index} onClick={() => setCategoryFilter(category)} className="badge badge-outline">
-                {category}
-              </button>
-            ))}
-        </div>
+        <div className='my-10 max-w-4xl mx-auto'>
+            <div role="tablist" className="tabs tabs-lg tabs-boxed">
+              {["All", "Brunch", "Burger", "Chinese", "Coffee", "Pizza", "Ramen", "Thai"]
+                .map((category, index) => (
+                  <a
+                    key={index}
+                    role="tab"
+                    className={`tab ${category === currentCategory ? 'tab-active' : ''}`}
+                    onClick={() => setCategoryFilter(category)}
+                    >
+                      {category}
+                    </a>
+                ))
+            }
+            </div>
+          </div>
       </div>
       <div className={'space-y-6'}>
         {accounts.isLoading ? (

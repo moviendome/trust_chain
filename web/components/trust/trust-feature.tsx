@@ -13,18 +13,6 @@ export default function TrustFeature() {
 
   return publicKey ? (
     <div>
-      <AppHero
-        title="TrustChain"
-        subtitle={'Verified Reviews of Your Favorite Places on Solana'}
-      >
-        <p className="mb-6">
-          <ExplorerLink
-            path={`account/${programId}`}
-            label={ellipsify(programId.toString())}
-          />
-        </p>
-        <TrustCreate />
-      </AppHero>
       <TrustList />
     </div>
   ) : (
