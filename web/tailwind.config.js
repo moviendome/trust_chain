@@ -6,15 +6,18 @@ module.exports = {
   content: [
     join(
       __dirname,
-      '{src,pages,components,app}/**/*!(*.stories|*.spec).{ts,tsx,html}'
+      '{src,pages,components,app,ui,screens}/**/*!(*.stories|*.spec).{ts,tsx,html}'
     ),
     ...createGlobPatternsForDependencies(__dirname),
   ],
   theme: {
     extend: {},
   },
+  daisyui: {
+    themes: ['dim'],
+  },
   plugins: [
     require('daisyui'),
-    require('@tailwindcss/aspect-ratio')
+    require('@tailwindcss/aspect-ratio'),
   ],
 };

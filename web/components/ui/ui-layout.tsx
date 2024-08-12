@@ -26,33 +26,35 @@ export function UiLayout({
 
   return (
     <div className="h-full flex flex-col">
-      <div className="navbar bg-base-300 text-neutral-content flex-col md:flex-row space-y-2 md:space-y-0">
-        <div className="flex-1">
-          <Link className="btn btn-ghost normal-case text-xl" href="/">
-            <img className="h-4 md:h-6" alt="Logo" src="/logo.png" />
-          </Link>
-          <ul className="menu menu-horizontal px-1 space-x-2">
-            {links.map(({ label, path }) => (
-              <li key={path}>
-                <Link
-                  className={pathname.startsWith(path) ? 'active' : ''}
-                  href={path}
-                >
-                  {label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+      { pathname !== "/" && (
+        <div className="navbar bg-base-300 text-neutral-content flex-col md:flex-row space-y-2 md:space-y-0">
+          <div className="flex-1">
+            <Link className="btn btn-ghost normal-case text-xl" href="/">
+              <img className="h-4 md:h-6" alt="Logo" src="/logo.png" />
+            </Link>
+            <ul className="menu menu-horizontal px-1 space-x-2">
+              {links.map(({ label, path }) => (
+                <li key={path}>
+                  <Link
+                    className={pathname.startsWith(path) ? 'active' : ''}
+                    href={path}
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="flex-none space-x-2">
+            <WalletButton />
+            <ClusterUiSelect />
+          </div>
         </div>
-        <div className="flex-none space-x-2">
-          <WalletButton />
-          <ClusterUiSelect />
-        </div>
-      </div>
+      ) }
       <ClusterChecker>
         <AccountChecker />
       </ClusterChecker>
-      <div className="flex-grow mx-4 lg:mx-auto">
+      <div className="container flex-grow lg:mx-auto">
         <Suspense
           fallback={
             <div className="text-center my-32">
