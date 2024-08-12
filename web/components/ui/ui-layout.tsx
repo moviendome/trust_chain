@@ -1,7 +1,7 @@
 'use client';
 
 import { useWallet } from '@solana/wallet-adapter-react';
-import { useTrustProgram } from '../../components/trust/trust-data-access';
+import { useTrustProgram } from '../../components/demo/demo-data-access';
 import { WalletButton } from '../solana/solana-provider';
 import * as React from 'react';
 import { ReactNode, Suspense, useEffect, useRef } from 'react';

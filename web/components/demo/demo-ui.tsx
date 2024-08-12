@@ -7,12 +7,12 @@ import { ExplorerLink } from '../cluster/cluster-ui';
 import {
   useTrustProgram,
   useTrustProgramAccount,
-} from './trust-data-access';
+} from './demo-data-access';
 import { useWallet } from '@solana/wallet-adapter-react';
 
 import { Categories } from '@/ui';
 
-export function TrustCreate() {
+export function BusinessCreate() {
   const { createBusiness } = useTrustProgram();
   const { publicKey } = useWallet();
   const [category, setCategory] = useState("");
@@ -36,7 +36,11 @@ export function TrustCreate() {
 
   return (
     <div>
-      <button className="btn" onClick={()=>document.getElementById('my_modal_3').showModal()}>open modal</button>
+      <p className='text-center mt-10'>
+        <button className="underline" onClick={()=>document.getElementById('my_modal_3').showModal()}>
+          Add a new Business
+        </button>
+      </p>
       <dialog id="my_modal_3" className="modal">
         <div className="modal-box">
           <form method="dialog">
@@ -97,7 +101,7 @@ export function TrustCreate() {
   );
 }
 
-export function TrustList() {
+export function BusinessList() {
   const { createBusiness, accounts, getProgramAccount, categoryFilter, setCategoryFilter } = useTrustProgram();
 
   let currentCategory = categoryFilter ? categoryFilter : 'All';

@@ -46,7 +46,7 @@ const Hero = () => {
             </p>
             <Link
               className='btn btn-primary'
-              href='/trust'
+              href='/demo'
             >
               Try the Demo
             </Link>
