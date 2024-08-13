@@ -9,6 +9,7 @@ import {
   useTrustProgramAccount,
 } from './demo-data-access';
 import { useWallet } from '@solana/wallet-adapter-react';
+import Link from 'next/link';
 
 import { Categories } from '@/ui';
 
@@ -277,9 +278,9 @@ function BusinessCard({ account }: { account: PublicKey }) {
   };
 
   const handleSubmitReview = () => {
-    const title = "My third awesome review";
-    const rating = 3;
-    const comment = "Quiet, good coffee & stuning view!";
+    const title = "My second Review";
+    const rating = 4;
+    const comment = "Nice environment, Live music";
     const business = account.toString();
     // console.log(business);
     createReview.mutateAsync({ title, rating, comment, business, owner: publicKey });
@@ -299,19 +300,18 @@ function BusinessCard({ account }: { account: PublicKey }) {
     <span className="loading loading-spinner loading-lg"></span>
   ) : (
     <div className="card bg-base-100 w-96 shadow-xl relative">
-      <figure className="relative aspect-w-4 aspect-h-3">
+      <a href={`/demo/${account.toString()}`} className="relative aspect-w-4 aspect-h-3">
         <img
           src={accountQuery.data?.cover}
           alt={accountQuery.data?.name}
           className="object-cover"
         />
         <img
-          src={accountQuery.data?.profile} // replace with the path to your logo
+          src={accountQuery.data?.profile}
           alt={accountQuery.data?.name}
           className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-white rounded-full border-2 border-white" // adjust size and position as needed
-          // className="absolute inset-0 m-auto w-16 h-16 transform translate-y-1/2 bg-white rounded-full border-2 border-white" // adjust size and position as needed
         />
-      </figure>
+      </a>
       <div className="card-body">
         <h2 className="card-title">
           {accountQuery.data?.name}
@@ -325,12 +325,12 @@ function BusinessCard({ account }: { account: PublicKey }) {
         <div className="card-actions justify-end">
           <div className="badge badge-outline">{accountQuery.data?.category}</div>
         </div>
-        {/* <button */}
-        {/*   className="btn btn-xs btn-secondary btn-outline mt-6" */}
-        {/*   onClick={() => { handleSubmitReview() }} */}
-        {/* > */}
-        {/*   Rate! */}
-        {/* </button> */}
+        <button
+          className="btn btn-xs btn-secondary btn-outline mt-6"
+          onClick={() => { handleSubmitReview() }}
+        >
+          Rate!
+        </button>
         {/* <button */}
         {/*   className="btn btn-xs btn-secondary btn-outline mt-6" */}
         {/*   onClick={() => { */}

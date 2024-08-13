@@ -34,7 +34,7 @@ export function UiLayout({
       { pathname !== "/" && (
         <div className="navbar bg-base-300 text-neutral-content flex-col md:flex-row space-y-2 md:space-y-0">
           <div className="flex-1 align-center">
-            <Link className="btn btn-ghost normal-case text-xl" href="/">
+            <Link className="btn btn-ghost normal-case text-xl" href="/demo">
               <div className="rating rating rating-half">
                 <input type="radio" name="rating-10" className="rating-hidden" />
                 <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-1 bg-green-500" />
