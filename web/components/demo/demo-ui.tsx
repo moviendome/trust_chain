@@ -315,9 +315,13 @@ function BusinessCard({ account }: { account: PublicKey }) {
       <div className="card-body">
         <h2 className="card-title">
           {accountQuery.data?.name}
-          {/* <div className="badge badge-secondary">{reviewAccounts.data?.length}</div> */}
             { !isNaN(rating) && (
-              <div className="badge badge-secondary">{parseFloat(rating.toFixed(1))}</div>
+              <>
+                <div className="badge badge-secondary">
+                  <span className='pt-1 pr-1'>{parseFloat(rating.toFixed(1))}</span>
+                  <input type="radio" name="rating-4" className="mask mask-star-2 bg-green-500" />
+                </div>
+              </>
             )}
         </h2>
         <p>{accountQuery.data?.address}</p>
@@ -325,12 +329,12 @@ function BusinessCard({ account }: { account: PublicKey }) {
         <div className="card-actions justify-end">
           <div className="badge badge-outline">{accountQuery.data?.category}</div>
         </div>
-        <button
-          className="btn btn-xs btn-secondary btn-outline mt-6"
-          onClick={() => { handleSubmitReview() }}
-        >
-          Rate!
-        </button>
+        {/* <button */}
+        {/*   className="btn btn-xs btn-secondary btn-outline mt-6" */}
+        {/*   onClick={() => { handleSubmitReview() }} */}
+        {/* > */}
+        {/*   Rate! */}
+        {/* </button> */}
         {/* <button */}
         {/*   className="btn btn-xs btn-secondary btn-outline mt-6" */}
         {/*   onClick={() => { */}
