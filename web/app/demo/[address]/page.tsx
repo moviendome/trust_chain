@@ -7,18 +7,43 @@ import {
   useTrustProgram,
   useTrustProgramAccount,
 } from '../../../components/demo/demo-data-access';
-
+import { useWallet } from '@solana/wallet-adapter-react';
 
 export default function Page({ params }: { params: { address: string } }) {
   const account = new PublicKey(params?.address);
   const { accountQuery } = useTrustProgramAccount({ account });
-  const { reviewAccounts, setBusinessFilter } = useTrustProgram();
+  const { reviewAccounts, createReview, setBusinessFilter } = useTrustProgram();
+
+  const { publicKey } = useWallet();
+
+  const business = account.toString();
+  const [title, setTitle] = useState("");
+  const [comment, setComment] = useState("");
+  const [rating, setRating] = useState(5);
+
+  const isFormValid = title.trim() !== "" && comment.trim() !== "";
+
+  const handleSubmit = () => {
+    if (publicKey && isFormValid) {
+      createReview.mutateAsync({ title, rating, comment, business, owner: publicKey }, {
+        onSuccess: () => {
+          // This will refetch the reviews after a new one is created
+          reviewAccounts.refetch();
+
+          // Reset form values
+          setTitle("");
+          setComment("");
+          setRating(5);
+        }
+      });
+    }
+  };
 
   useEffect(() => {
     setBusinessFilter(account.toString());
   }, []); // This effect depends on newBusinessFilter
 
-  const rating = reviewAccounts.data ? reviewAccounts.data.reduce((sum, review) => sum + review?.account.rating, 0) / reviewAccounts.data.length : 0;
+  const ratingAvg = reviewAccounts.data ? reviewAccounts.data.reduce((sum, review) => sum + review?.account.rating, 0) / reviewAccounts.data.length : 0;
   const reviews = reviewAccounts.data?.length > 0 ? reviewAccounts.data : [];
 
   return accountQuery.isLoading ? (
@@ -43,8 +68,11 @@ export default function Page({ params }: { params: { address: string } }) {
         <div className="card-body">
           <h2 className="card-title">
             {accountQuery.data?.name}
-            { !isNaN(rating) && (
-              <div className="badge badge-secondary">{parseFloat(rating.toFixed(1))}</div>
+            { !isNaN(ratingAvg) && (
+              <>
+                <div className="badge badge-secondary">{parseFloat(ratingAvg.toFixed(1))}</div>
+                <span className='text-sm'>{`(${reviews.length} ${reviews.length === 1 ? 'review' : 'reviews'})`}</span>
+              </>
             )}
           </h2>
           <p>{accountQuery.data?.address}</p>
@@ -57,17 +85,59 @@ export default function Page({ params }: { params: { address: string } }) {
 
       <br />
 
-      { reviews.map((review, index) => (
+      <div className='flex flex-col gap-4'>
+        <input
+          type='text'
+          placeholder='title'
+          value={title}
+          onChange={e => setTitle(e.target.value)}
+          className='input input-bordered w-full'
+        />
+
+        <textarea
+          className="textarea textarea-bordered"
+          placeholder="comment"
+          value={comment}
+          onChange={e => setComment(e.target.value)}>
+        </textarea>
+
+        <div className="rating rating-lg rating-half mx-auto pb-6">
+          <input type="radio" name="rating-10" className="mask mask-star-2 bg-green-500" value='1' onChange={e => setRating(e.target.value)} />
+          <input type="radio" name="rating-10" className="mask mask-star-2 bg-green-500" value='2' onChange={e => setRating(e.target.value)} />
+          <input type="radio" name="rating-10" className="mask mask-star-2 bg-green-500" value='3' onChange={e => setRating(e.target.value)} />
+          <input type="radio" name="rating-10" className="mask mask-star-2 bg-green-500" value='4' onChange={e => setRating(e.target.value)} />
+          <input type="radio" name="rating-10" className="mask mask-star-2 bg-green-500" value='5' defaultChecked onChange={e => setRating(e.target.value)} />
+        </div>
+
+        <button
+          className="btn btn-xs lg:btn-md btn-primary"
+          onClick={handleSubmit}
+          disabled={createReview.isPending && !isFormValid}
+        >
+          Add Review
+        </button>
+      </div>
+
+      { reviews.map((review, index) => {
+          console.log(review);
+          const createdAt = new Date(review?.account?.createdAt * 1000).toLocaleDateString();
+          console.log(createdAt);
+          // .toLocaleDateString()
+          return (
         <div key={index} className="card bg-base-100 shadow-xl">
           <div className="card-body">
             <h2 className="card-title">{ review?.account?.title }</h2>
             <p>{ review?.account?.comment }</p>
+            <p>{ createdAt}</p>
             <div className="card-actions justify-end">
-              <button className="btn btn-primary">Buy Now</button>
+              <span className='py-1'>{ review?.account?.rating }</span>
+              <div className="rating">
+                <input type="radio" name="rating-10" className="mask mask-star-2 bg-green-500" />
+              </div>
             </div>
           </div>
         </div>
-      ))}
+      )})}
     </div>
   )
 }

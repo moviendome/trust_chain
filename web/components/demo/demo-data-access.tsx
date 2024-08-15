@@ -102,13 +102,13 @@ export function useTrustProgram() {
 
   const createReview = useMutation<string, error, ReviewArgs>({
     mutationKey: ['reviewEntry', 'create', { cluster }],
-    mutationFn: async ({title, rating, business, owner}) => {
+    mutationFn: async ({title, rating, comment, business, owner}) => {
       const [reviewEntryState] = await PublicKey.findProgramAddress(
         [Buffer.from(title), owner.toBuffer()],
         programId,
       )
 
-      return program.methods.createReview(title, rating, business).accounts({ reviewEntry: reviewEntryState, business: business}).rpc();
+      return program.methods.createReview(title, rating, comment).accounts({ reviewEntry: reviewEntryState, business: business}).rpc();
     },
     onSuccess: (signature) => {
       transactionToast(signature);
