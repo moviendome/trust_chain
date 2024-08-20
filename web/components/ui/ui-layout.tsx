@@ -35,22 +35,8 @@ export function UiLayout({
         <div className="navbar bg-base-300 text-neutral-content flex-col md:flex-row space-y-2 md:space-y-0">
           <div className="flex-1 align-center">
             <Link className="btn btn-ghost normal-case text-xl" href="/demo">
-              <div className="rating rating rating-half">
-                <input type="radio" name="rating-10" className="rating-hidden" />
-                <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-1 bg-green-500" />
-                <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-2 bg-green-500" />
-                <input
-                  type="radio"
-                  name="rating-10"
-                  className="mask mask-star-2 mask-half-1 bg-green-500"
-                  defaultChecked />
-                <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-2 bg-green-500" />
-                <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-1 bg-green-500" />
-                <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-2 bg-green-500" />
-                <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-1 bg-green-500" />
-                <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-2 bg-green-500" />
-                <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-1 bg-green-500" />
-                <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-2 bg-green-500" />
+              <div className="rating">
+                <input type="radio" name="rating-10" className="mask mask-star-2 bg-green-500" />
               </div>
               <div className=''>Trust Chain</div>
             </Link>
