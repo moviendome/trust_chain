@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import { PublicKey } from '@solana/web3.js';
-import { ellipsify } from '../../../components/ui/ui-layout';
+import { ellipsify } from '@/components/ui/ui-layout';
 import {
   useTrustProgram,
   useTrustProgramAccount,
-} from '../../../components/demo/demo-data-access';
+} from '@/components/demo/demo-data-access';
 import { useWallet } from '@solana/wallet-adapter-react';
 
 export default function Page({ params }: { params: { address: string } }) {
