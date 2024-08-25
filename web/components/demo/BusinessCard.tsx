@@ -44,7 +44,15 @@ const BusinessCard = ({ account }: { account: PublicKey }) => {
   const rating = reviewAccounts.data ? reviewAccounts.data.reduce((sum, review) => sum + review?.account.rating, 0) / reviewAccounts.data.length : 0;
 
   return accountQuery.isLoading ? (
-    <span className="loading loading-spinner loading-lg"></span>
+    <div className="card bg-base-100 w-96 shadow-xl relative">
+      <div className="skeleton h-72 w-full"></div>
+      <div className="card-body">
+        <h2 className="card-title">
+        <div className="skeleton h-4 w-48"></div>
+        </h2>
+        <div className="skeleton h-4 w-28"></div>
+      </div>
+    </div>
   ) : (
     <div className="card bg-base-100 w-96 shadow-xl relative">
       <a href={`/demo/${account.toString()}`} className="relative aspect-w-4 aspect-h-3">

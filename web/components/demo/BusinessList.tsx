@@ -11,7 +11,7 @@ const BusinessList = () => {
   const { publicKey } = useWallet();
 
   if (getProgramAccount.isLoading) {
-    return <span className="loading loading-spinner loading-lg"></span>;
+    // return <span className="loading loading-spinner loading-lg"></span>;
   }
   if (!getProgramAccount.data?.value) {
     return (
