@@ -1,11 +1,10 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import {
   getTrustProgram,
   getTrustProgramId,
 } from '@trust-chain/anchor';
-import { Program } from '@coral-xyz/anchor';
 import { useConnection } from '@solana/wallet-adapter-react';
 import { Cluster, PublicKey } from '@solana/web3.js';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -20,11 +19,11 @@ interface EntryArgs {
   address: string;
   profile: string;
   cover: string;
-  latitude: BigInt,
-  longitude: BigInt,
+  latitude: bigint,
+  longitude: bigint,
   category: string;
   owner: PublicKey;
-};
+}
 
 export function useTrustProgram() {
   const { connection } = useConnection();
@@ -132,28 +131,11 @@ export function useTrustProgram() {
 export function useTrustProgramAccount({ account }: { account: PublicKey }) {
   const { cluster } = useCluster();
   const transactionToast = useTransactionToast();
-  const { programId, program, accounts } = useTrustProgram();
+  const { program, accounts } = useTrustProgram();
 
   const accountQuery = useQuery({
     queryKey: ['business', 'fetch', { cluster, account }],
     queryFn: () => program.account.businessEntryState.fetch(account),
-  });
-
-  const updateEntry = useMutation<string, error, EntryArgs>({
-    mutationKey: ['businessEntry', 'update', { cluster }],
-    mutationFn: async ({name, avatar, category, url, owner}) => {
-      const [journalEntryState] = await PublicKey.findProgramAddress(
-        [Buffer.from(name), owner.toBuffer()],
-        programId,
-      )
-
-      return program.methods.updateBusiness(name, avatar, category, url).accounts({ businessEntry: businessEntryState }).rpc();
-    },
-    onSuccess: (signature) => {
-      transactionToast(signature);
-      return accounts.refetch();
-    },
-    onError: () => toast.error('Failed to initialize account'),
   });
 
   const deleteBusiness = useMutation({
@@ -168,7 +150,6 @@ export function useTrustProgramAccount({ account }: { account: PublicKey }) {
 
   return {
     accountQuery,
-    updateEntry,
     deleteBusiness,
   };
 }

@@ -1,6 +1,5 @@
 'use client';
 
-import { useWallet } from '@solana/wallet-adapter-react';
 import { useTrustProgram } from '../../components/demo/demo-data-access';
 import { WalletButton } from '../solana/solana-provider';
 import * as React from 'react';
@@ -26,7 +25,6 @@ export function UiLayout({
 }) {
   const pathname = usePathname();
 
-  const { publicKey } = useWallet();
   const { programId } = useTrustProgram();
 
   return (
@@ -34,7 +32,7 @@ export function UiLayout({
       { pathname !== '/' && (
         <div className='navbar bg-base-300 text-neutral-content flex-col md:flex-row space-y-2 md:space-y-0'>
           <div className='flex-1 align-center'>
-            <Link className='btn btn-ghost normal-case text-xl' href='/demo'>
+            <Link className='btn btn-ghost normal-case text-xl mx-2' href='/demo'>
               <div className='rating'>
                 <input type='radio' name='rating-10' className='mask mask-star-2 bg-green-500' />
               </div>

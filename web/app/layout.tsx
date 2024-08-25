@@ -9,11 +9,11 @@ export const metadata = {
   description: 'Created by moviendo.me using create-solana-dapp',
 };
 
-// const links: { label: string; path: string }[] = [
-//   { label: 'Account', path: '/account' },
-//   { label: 'Clusters', path: '/clusters' },
-// ];
-const links: { label: string; path: string }[] = [];
+const links: { label: string; path: string }[] = [
+  { label: 'Account', path: '/account' },
+  { label: 'Clusters', path: '/clusters' },
+];
+// const links: { label: string; path: string }[] = [];
 
 export default function RootLayout({
   children,

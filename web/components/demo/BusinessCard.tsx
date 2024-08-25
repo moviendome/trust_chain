@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useTrustProgram, useTrustProgramAccount } from '@/components/demo/demo-data-access';
 import { ellipsify } from '@/components/ui/ui-layout';
@@ -6,36 +6,17 @@ import { ellipsify } from '@/components/ui/ui-layout';
 const BusinessCard = ({ account }: { account: PublicKey }) => {
   const {
     accountQuery,
-    updateEntry,
-    deleteBusiness,
+    // deleteBusiness,
   } = useTrustProgramAccount({ account });
 
-  const { reviewAccounts, createReview, setBusinessFilter } = useTrustProgram();
+  const { reviewAccounts, setBusinessFilter } = useTrustProgram();
 
   const { publicKey } = useWallet();
-  const [avatar, setAvatar] = useState("");
   const name = accountQuery.data?.name;
-  const [business, setBusiness] = useState("");
 
   useEffect(() => {
     setBusinessFilter(account.toString());
   }, [name]); // This effect depends on newBusinessFilter
-
-  const isFormValid = avatar.trim() !== "";
-
-  const handleSubmit = () => {
-    if (publicKey && isFormValid && name) {
-      updateEntry.mutateAsync({ name, avatar, owner: publicKey });
-    }
-  };
-
-  const handleSubmitReview = () => {
-    const title = "My second Review";
-    const rating = 4;
-    const comment = "Nice environment, Live music";
-    const business = account.toString();
-    createReview.mutateAsync({ title, rating, comment, business, owner: publicKey });
-  };
 
   if (!publicKey) {
     return <p>Connect your wallet</p>
@@ -109,4 +90,4 @@ const BusinessCard = ({ account }: { account: PublicKey }) => {
   );
 }
 
-export default memo(BusinessCard);
+export default BusinessCard;
