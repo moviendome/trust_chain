@@ -18,7 +18,7 @@ export default function Page() {
 
   return (
     <div className='container'>
-      <div className="hero bg-base-200 min-h-[420px]">
+      <div className="hero bg-base-200 min-h-[420px] my-10">
         <div className="hero-content text-center">
           <div className="max-w-4xl">
             <div className="rating rating-lg rating-half">
@@ -52,8 +52,8 @@ export default function Page() {
         </div>
       </div>
 
-      <div className='my-10'>
-        <h2 className='text-4xl font-bold text-center'>Why Reviews on Blockchain</h2>
+      <div className='my-20'>
+        <h2 className='text-4xl font-bold text-center'>Why Reviews on Solana Blockchain</h2>
         <div className="grid mx-6 md:mx-0 my-10 md:grid-cols-3 gap-8">
           { feature.map((item, index) => (
             <div key={index} className="card max-w-96 bg-neutral shadow-xl">
@@ -66,22 +66,23 @@ export default function Page() {
         </div>
       </div>
 
-      <div className='my-10'>
+      <div className='my-20'>
         <h2 className='my-10 text-4xl font-bold text-center'>How It Works</h2>
         <div className='flex justify-center'>
           <ul className="steps steps-vertical md:steps-horizontal">
             <li className="step">Go to Demo</li>
             <li className="step">Connect you Wallet</li>
-            <li className="step">Review a place</li>
-            <li className="step">Read your Review & Verify on chain</li>
+            <li className="step">Create a Business</li>
+            <li className="step">Create a Review</li>
+            <li className="step">Read your Review & Verify</li>
           </ul>
         </div>
       </div>
 
-      <div className='my-10'>
+      <div className='my-20'>
         <h2 className='my-10 text-4xl font-bold text-center'>Get Started</h2>
         <div className="mockup-code bg-primary text-primary-content max-w-4xl mx-auto">
-          <pre data-prefix='$'><code>git clone https://github.com/moviendome/trust-chain</code></pre>
+          <pre data-prefix='$'><code>git clone https://github.com/moviendome/trust_chain</code></pre>
         </div>
       </div>
     </div>

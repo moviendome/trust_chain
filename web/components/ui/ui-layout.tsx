@@ -30,13 +30,13 @@ export function UiLayout({
   const { programId } = useTrustProgram();
 
   return (
-    <div className="h-full flex flex-col">
-      { pathname !== "/" && (
-        <div className="navbar bg-base-300 text-neutral-content flex-col md:flex-row space-y-2 md:space-y-0">
-          <div className="flex-1 align-center">
-            <Link className="btn btn-ghost normal-case text-xl" href="/demo">
-              <div className="rating">
-                <input type="radio" name="rating-10" className="mask mask-star-2 bg-green-500" />
+    <div className='h-full flex flex-col'>
+      { pathname !== '/' && (
+        <div className='navbar bg-base-300 text-neutral-content flex-col md:flex-row space-y-2 md:space-y-0'>
+          <div className='flex-1 align-center'>
+            <Link className='btn btn-ghost normal-case text-xl' href='/demo'>
+              <div className='rating'>
+                <input type='radio' name='rating-10' className='mask mask-star-2 bg-green-500' />
               </div>
               <div className=''>Trust Chain</div>
             </Link>
@@ -47,7 +47,7 @@ export function UiLayout({
               />
             </span>
           </div>
-          <ul className="menu menu-horizontal px-1 space-x-2">
+          <ul className='menu menu-horizontal px-1 space-x-2'>
             {links.map(({ label, path }) => (
               <li key={path}>
                 <Link
@@ -59,7 +59,7 @@ export function UiLayout({
               </li>
             ))}
           </ul>
-          <div className="flex-none space-x-2">
+          <div className='flex-none space-x-2'>
             <WalletButton />
             <ClusterUiSelect />
           </div>
@@ -68,11 +68,11 @@ export function UiLayout({
       <ClusterChecker>
         <AccountChecker />
       </ClusterChecker>
-      <div className="container flex-grow lg:mx-auto">
+      <div className='container flex-grow lg:mx-auto'>
         <Suspense
           fallback={
-            <div className="text-center my-32">
-              <span className="loading loading-spinner loading-lg"></span>
+            <div className='text-center my-32'>
+              <span className='loading loading-spinner loading-lg'></span>
             </div>
           }
         >
