@@ -15,7 +15,6 @@ pub mod trust_chain {
         latitude: i64,
         longitude: i64,
         category: String,
-        //bump: u8
     ) -> Result<()> {
         let business_entry = &mut ctx.accounts.business_entry;
         business_entry.owner = ctx.accounts.owner.key();
@@ -27,7 +26,6 @@ pub mod trust_chain {
         business_entry.longitude = longitude;
         business_entry.category = category;
         business_entry.created_at = Clock::get().unwrap().unix_timestamp;
-        //business.bump = bump;
         Ok(())
     }
 

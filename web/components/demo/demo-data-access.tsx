@@ -40,11 +40,8 @@ export function useTrustProgram() {
   const [categoryFilter, setCategoryFilter] = useState('');
   const [businessFilter, setBusinessFilter] = useState('');
 
-  // console.log(categoryFilter);
-
   const accounts = useQuery({
     queryKey: ['trust', 'all', { cluster, categoryFilter }],
-    // queryFn: () => program.account.businessEntryState.all(),
     queryFn: () => {
       if (categoryFilter === 'All') {
         return program.account.businessEntryState.all();
@@ -66,7 +63,6 @@ export function useTrustProgram() {
     queryFn: () => connection.getParsedAccountInfo(programId),
   });
 
-  // Use publicKey of the wallet connected to the Frontend
   const createBusiness = useMutation<string, error, EntryArgs>({
     mutationKey: ['businessEntry', 'create', { cluster }],
     mutationFn: async ({name, address, profile, cover, latitude, longitude, category, owner}) => {
