@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useTrustProgram } from '@/components/demo/demo-data-access';
 import { BusinessCard } from '@/components/demo';
@@ -130,7 +130,15 @@ const BusinessList = () => {
       </div>
       <div className={'space-y-6'}>
         {accounts.isLoading ? (
-          <span className="loading loading-spinner loading-lg"></span>
+          <div className="card bg-base-100 w-96 shadow-xl relative">
+            <div className="skeleton h-72 w-full"></div>
+            <div className="card-body">
+              <h2 className="card-title">
+              <div className="skeleton h-4 w-48"></div>
+              </h2>
+              <div className="skeleton h-4 w-28"></div>
+            </div>
+          </div>
         ) : accounts.data?.length ? (
           <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
             {accounts.data?.map((account) => (
@@ -141,9 +149,15 @@ const BusinessList = () => {
             ))}
           </div>
         ) : (
-          <div className="text-center">
-            <h2 className={'text-2xl'}>No accounts</h2>
-            No accounts found. Create one above to get started.
+          <div className="hero bg-base-200 max-w-6xl mx-auto">
+            <div className="hero-content text-center">
+              <div className="max-w-xl py-20">
+                <h1 className="text-2xl md:text-3xl font-bold">No Business found in this category</h1>
+                <p className="py-6">
+                  Create one to get started
+                </p>
+              </div>
+            </div>
           </div>
         )}
       </div>
@@ -151,4 +165,4 @@ const BusinessList = () => {
   );
 }
 
-export default memo(BusinessList);
+export default BusinessList;

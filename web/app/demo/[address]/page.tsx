@@ -19,9 +19,9 @@ export default function Page({ params }: { params: { address: string } }) {
   const business = account.toString();
   const [title, setTitle] = useState("");
   const [comment, setComment] = useState("");
-  const [rating, setRating] = useState(5);
+  const [rating, setRating] = useState(0);
 
-  const isFormValid = title.trim() !== "" && comment.trim() !== "";
+  const isFormValid = title.trim() !== '' && comment.trim() !== '' && rating !== 0;
 
   const handleSubmit = () => {
     if (publicKey && isFormValid) {
@@ -51,7 +51,7 @@ export default function Page({ params }: { params: { address: string } }) {
       <span className="loading loading-spinner loading-lg"></span>
     </div>
   ) : (
-    <div className='max-w-4xl mx-auto mt-16'>
+    <div className='max-w-4xl mx-auto my-16'>
       <div className="card bg-base-100 shadow-xl">
         <figure className="relative aspect-w-4 aspect-h-3">
           <img
@@ -88,7 +88,7 @@ export default function Page({ params }: { params: { address: string } }) {
       <div className='flex flex-col gap-4'>
         <input
           type='text'
-          placeholder='title'
+          placeholder='Title of your Review'
           value={title}
           onChange={e => setTitle(e.target.value)}
           className='input input-bordered w-full'
@@ -96,35 +96,33 @@ export default function Page({ params }: { params: { address: string } }) {
 
         <textarea
           className="textarea textarea-bordered"
-          placeholder="comment"
+          placeholder="Tell everyone how amazing is this place"
           value={comment}
           onChange={e => setComment(e.target.value)}>
         </textarea>
 
         <div className="rating rating-lg rating-half mx-auto pb-6">
+          <input type="radio" name="rating-10" className="mask mask-star-2 bg-green-500 hidden" value='0' defaultChecked onChange={e => setRating(e.target.value)} />
           <input type="radio" name="rating-10" className="mask mask-star-2 bg-green-500" value='1' onChange={e => setRating(e.target.value)} />
           <input type="radio" name="rating-10" className="mask mask-star-2 bg-green-500" value='2' onChange={e => setRating(e.target.value)} />
           <input type="radio" name="rating-10" className="mask mask-star-2 bg-green-500" value='3' onChange={e => setRating(e.target.value)} />
           <input type="radio" name="rating-10" className="mask mask-star-2 bg-green-500" value='4' onChange={e => setRating(e.target.value)} />
-          <input type="radio" name="rating-10" className="mask mask-star-2 bg-green-500" value='5' defaultChecked onChange={e => setRating(e.target.value)} />
+          <input type="radio" name="rating-10" className="mask mask-star-2 bg-green-500" value='5' onChange={e => setRating(e.target.value)} />
         </div>
 
         <button
           className="btn btn-xs lg:btn-md btn-primary"
           onClick={handleSubmit}
-          disabled={createReview.isPending && !isFormValid}
+          disabled={!createReview.isPending && !isFormValid}
         >
           Add Review
         </button>
       </div>
 
       { reviews.map((review, index) => {
-          console.log(review);
           const createdAt = new Date(review?.account?.createdAt * 1000).toLocaleDateString();
-          console.log(createdAt);
-          // .toLocaleDateString()
           return (
-        <div key={index} className="card bg-base-100 shadow-xl">
+        <div key={index} className="card bg-base-100 shadow-xl my-4">
           <div className="card-body">
             <h2 className="card-title">{ review?.account?.title }</h2>
             <p>{ review?.account?.comment }</p>
