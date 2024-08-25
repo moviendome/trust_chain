@@ -16,7 +16,6 @@ const BusinessCard = ({ account }: { account: PublicKey }) => {
   const [avatar, setAvatar] = useState("");
   const name = accountQuery.data?.name;
   const [business, setBusiness] = useState("");
-  // setBusinessFilter(account.toString());
 
   useEffect(() => {
     setBusinessFilter(account.toString());
@@ -35,17 +34,12 @@ const BusinessCard = ({ account }: { account: PublicKey }) => {
     const rating = 4;
     const comment = "Nice environment, Live music";
     const business = account.toString();
-    // console.log(business);
     createReview.mutateAsync({ title, rating, comment, business, owner: publicKey });
   };
 
   if (!publicKey) {
     return <p>Connect your wallet</p>
   }
-
-  // reviewAccounts.data?.forEach((review) => {
-  //   console.log(review?.account?.rating);
-  // });
 
   const rating = reviewAccounts.data ? reviewAccounts.data.reduce((sum, review) => sum + review?.account.rating, 0) / reviewAccounts.data.length : 0;
 
@@ -82,31 +76,26 @@ const BusinessCard = ({ account }: { account: PublicKey }) => {
         <div className="card-actions justify-end">
           <div className="badge badge-outline">{accountQuery.data?.category}</div>
         </div>
-        {/* <button */}
-        {/*   className="btn btn-xs btn-secondary btn-outline mt-6" */}
-        {/*   onClick={() => { handleSubmitReview() }} */}
-        {/* > */}
-        {/*   Rate! */}
-        {/* </button> */}
-        {/* <button */}
-        {/*   className="btn btn-xs btn-secondary btn-outline mt-6" */}
-        {/*   onClick={() => { */}
-        {/*     if ( */}
-        {/*       !window.confirm( */}
-        {/*         'Are you sure you want to close this account?' */}
-        {/*       ) */}
-        {/*     ) { */}
-        {/*       return; */}
-        {/*     } */}
-        {/*     const name = accountQuery.data?.name; */}
-        {/*     if (name) { */}
-        {/*       return deleteBusiness.mutateAsync(name); */}
-        {/*     } */}
-        {/*   }} */}
-        {/*   disabled={deleteBusiness.isPending} */}
-        {/* > */}
-        {/*   Delete */}
-        {/* </button> */}
+
+        <button
+          className="btn btn-link"
+          onClick={() => {
+            if (
+              !window.confirm(
+                'Are you sure you want to close this account?'
+              )
+            ) {
+              return;
+            }
+            const name = accountQuery.data?.name;
+            if (name) {
+              return deleteBusiness.mutateAsync(name);
+            }
+          }}
+          disabled={deleteBusiness.isPending}
+        >
+          Delete
+        </button>
       </div>
     </div>
   );

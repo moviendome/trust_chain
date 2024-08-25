@@ -13,8 +13,8 @@ export default function Page() {
 
   return publicKey ? (
     <div className='pb-16'>
-      <BusinessCreate />
       <BusinessList />
+      <BusinessCreate />
     </div>
   ) : (
     <div className="max-w-4xl mx-auto">
