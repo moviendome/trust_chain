@@ -152,7 +152,7 @@ const BusinessList = () => {
           <div className="hero bg-base-200 max-w-6xl mx-auto">
             <div className="hero-content text-center">
               <div className="max-w-xl py-20">
-                <h1 className="text-2xl md:text-3xl font-bold">No Business found in this category</h1>
+                <h1 className="text-2xl md:text-3xl font-bold">No Business found</h1>
                 <p className="py-6">
                   Create one to get started
                 </p>

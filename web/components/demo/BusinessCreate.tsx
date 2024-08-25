@@ -76,7 +76,7 @@ const BusinessCreate =  () => {
                 placeholder='Soi 6. Sukhummvit Road, TH 10120'
                 value={address}
                 onChange={e => setAddress(e.target.value)}
-                className='input input-bordered w-full max-w-xs'
+                className='input input-bordered w-full'
               />
             </label>
 
