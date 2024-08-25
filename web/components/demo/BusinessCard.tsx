@@ -85,25 +85,25 @@ const BusinessCard = ({ account }: { account: PublicKey }) => {
           <div className="badge badge-outline">{accountQuery.data?.category}</div>
         </div>
 
-        <button
-          className="btn btn-link"
-          onClick={() => {
-            if (
-              !window.confirm(
-                'Are you sure you want to close this account?'
-              )
-            ) {
-              return;
-            }
-            const name = accountQuery.data?.name;
-            if (name) {
-              return deleteBusiness.mutateAsync(name);
-            }
-          }}
-          disabled={deleteBusiness.isPending}
-        >
-          Delete
-        </button>
+        {/* <button */}
+        {/*   className="btn btn-link" */}
+        {/*   onClick={() => { */}
+        {/*     if ( */}
+        {/*       !window.confirm( */}
+        {/*         'Are you sure you want to close this account?' */}
+        {/*       ) */}
+        {/*     ) { */}
+        {/*       return; */}
+        {/*     } */}
+        {/*     const name = accountQuery.data?.name; */}
+        {/*     if (name) { */}
+        {/*       return deleteBusiness.mutateAsync(name); */}
+        {/*     } */}
+        {/*   }} */}
+        {/*   disabled={deleteBusiness.isPending} */}
+        {/* > */}
+        {/*   Delete */}
+        {/* </button> */}
       </div>
     </div>
   );
