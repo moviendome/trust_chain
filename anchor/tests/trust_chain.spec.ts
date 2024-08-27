@@ -1,55 +1,72 @@
 import * as anchor from '@coral-xyz/anchor';
-import { Program } from "@coral-xyz/anchor";
+import { Program } from '@coral-xyz/anchor';
 import { TrustChain } from '../target/types/trust_chain';
-import * as assert from "assert";
-import * as bs58 from "bs58";
+import * as assert from 'assert';
+// import * as bs58 from 'bs58';
 
 describe('TrustChain', () => {
+  const provider = anchor.AnchorProvider.env();
+  anchor.setProvider(provider);
+
+  const program = anchor.workspace.TrustChain as Program<TrustChain>;
+
   it('should create a business and a review', async () => {
-    // Configure the client to use the local cluster.
-    // anchor.setProvider(anchor.AnchorProvider.env());
+    const businessData = {
+      name: 'Pala Pizza Romana & Bistrot',
+      address: 'Room 1 BTS/MRT Soi Sukhumvit 23',
+      profile: 'https://images.deliveryhero.io/image/fd-th/th-logos/ct3mi-logo.jpg',
+      latitude: 10.0,
+      longitude: 10.0,
+      cover: 'https://d2sj0xby2hzqoy.cloudfront.net/cinque_stagioni/attachments/data/000/000/882/original/la-pizza-in-pala-alla-romana-header.jpg',
+      category: 'Pizza',
+    }
 
-    // Configure the client to use the local cluster.
-    const provider = anchor.AnchorProvider.env();
-    anchor.setProvider(provider);
-
-    const program = anchor.workspace.TrustChain as Program<TrustChain>;
-
-    console.log('should create a business and a review');
-
-    // Generate PDA and bump for the business
-    const [businessPda, businessBump] = await anchor.web3.PublicKey.findProgramAddress(
-      [Buffer.from("business"), provider.wallet.publicKey.toBuffer()],
+    const [businessEntryState] = await anchor.web3.PublicKey.findProgramAddress(
+      [Buffer.from(businessData.name), provider.wallet.publicKey.toBuffer()],
       program.programId
     );
 
-    // Create a new business
-    await program.methods.createBusiness("My Business", "https://avatar.url", "Tech", "https://business.url", businessBump)
-      .accounts({
-        business: businessPda,
-        user: provider.wallet.publicKey,
-        systemProgram: anchor.web3.SystemProgram.programId,
-      })
-      .rpc();
+    await program.methods.createBusiness(
+      businessData.name,
+      businessData.address,
+      businessData.profile,
+      businessData.cover,
+      new anchor.BN(businessData.latitude),
+      new anchor.BN(businessData.longitude),
+      businessData.category
+    ).accounts({ businessEntry: businessEntryState}).rpc();
 
-    console.log(`Business created with PDA: ${businessPda.toBase58()}`);
+    const businessEntry = await program.account.businessEntryState.fetch(businessEntryState);
+    assert.equal(businessEntry.name, businessData.name);
+    assert.equal(businessEntry.address, businessData.address);
+    assert.equal(businessEntry.profile, businessData.profile);
+    assert.equal(businessEntry.latitude, businessData.latitude);
+    assert.equal(businessEntry.longitude, businessData.longitude);
+    assert.equal(businessEntry.category, businessData.category);
+    assert.ok(businessEntry.createdAt);
+    assert.equal(businessEntry.owner.toBase58(), program.provider.wallet.publicKey.toBase58());
 
-    // // Generate PDA and bump for the review
-    // const [reviewPda, reviewBump] = await anchor.web3.PublicKey.findProgramAddress(
-    //   [Buffer.from("review"), provider.wallet.publicKey.toBuffer()],
-    //   program.programId
-    // );
-    //
-    // // Create a new review for the business
-    // await program.methods.createReview(5, "Great Business", "This business is amazing!", reviewBump)
-    //   .accounts({
-    //     review: reviewPda,
-    //     business: businessPda,
-    //     user: provider.wallet.publicKey,
-    //     systemProgram: anchor.web3.SystemProgram.programId,
-    //   })
-    //   .rpc();
-    //
-    // console.log(`Review created with PDA: ${reviewPda.toBase58()}`);
+    const reviewData = {
+      title: 'Best Pizza in Bangkok',
+      rating: 5,
+      comment: 'I love the pizza here, it is so delicious!',
+    }
+
+    const [reviewEntryState] = await anchor.web3.PublicKey.findProgramAddress(
+      [Buffer.from(reviewData.title), provider.wallet.publicKey.toBuffer()],
+      program.programId
+    );
+
+    await program.methods.createReview(
+      reviewData.title,
+      new anchor.BN(reviewData.rating),
+      reviewData.comment,
+    ).accounts({ reviewEntry: reviewEntryState, business: businessEntryState}).rpc();
+
+    const reviewEntry = await program.account.reviewEntryState.fetch(reviewEntryState);
+    assert.equal(reviewEntry.title, reviewData.title);
+    assert.equal(reviewEntry.rating, reviewData.rating);
+    assert.equal(reviewEntry.comment, reviewData.comment);
+    assert.equal(reviewEntry.business.toBase58(), businessEntryState.toBase58());
   });
 });
