@@ -10,16 +10,63 @@ describe('TrustChain', () => {
 
   const program = anchor.workspace.TrustChain as Program<TrustChain>;
 
-  it('should create a business and a review', async () => {
-    const businessData = {
-      name: 'Pala Pizza Romana & Bistrot',
-      address: 'Room 1 BTS/MRT Soi Sukhumvit 23',
-      profile: 'https://images.deliveryhero.io/image/fd-th/th-logos/ct3mi-logo.jpg',
-      latitude: 10.0,
-      longitude: 10.0,
-      cover: 'https://d2sj0xby2hzqoy.cloudfront.net/cinque_stagioni/attachments/data/000/000/882/original/la-pizza-in-pala-alla-romana-header.jpg',
-      category: 'Pizza',
+  const name = 'Pala Pizza Romana & Bistrot';
+  const invalid_name = 'This name is too long bla bla bla bla bla bla bla bla bla bla bla bla';
+
+  const address = 'Room 1 BTS/MRT Soi Sukhumvit 23';
+  const invalid_address =  'This Address is too long bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla';
+
+  const businessData = {
+    name: name,
+    address: address,
+    profile: 'https://images.deliveryhero.io/image/fd-th/th-logos/ct3mi-logo.jpg',
+    latitude: 10.0,
+    longitude: 10.0,
+    cover: 'https://d2sj0xby2hzqoy.cloudfront.net/cinque_stagioni/attachments/data/000/000/882/original/la-pizza-in-pala-alla-romana-header.jpg',
+    category: 'Pizza',
+  }
+
+  it('should not create a business when address is longer than 100', async () => {
+    businessData.address = invalid_address;
+
+    try {
+      const [businessEntryState] = await anchor.web3.PublicKey.findProgramAddress(
+        [Buffer.from(businessData.name), provider.wallet.publicKey.toBuffer()],
+        program.programId
+      );
+
+      await program.methods.createBusiness(
+        businessData.name,
+        businessData.address,
+        businessData.profile,
+        businessData.cover,
+        new anchor.BN(businessData.latitude),
+        new anchor.BN(businessData.longitude),
+        businessData.category
+      ).accounts({ businessEntry: businessEntryState}).rpc();
+    } catch (error) {
+      const err = anchor.AnchorError.parse(error.logs);
+      assert.strictEqual(err.error.errorCode.code, 'AddressTooLong');
     }
+  });
+
+  it('should not create a business when name is longer than 50', async () => {
+    businessData.name = invalid_name;
+
+    try {
+      const [businessEntryState] = await anchor.web3.PublicKey.findProgramAddress(
+        [Buffer.from(businessData.name), provider.wallet.publicKey.toBuffer()],
+        program.programId
+      );
+
+    } catch (error) {
+      assert.strictEqual(error.message, 'Max seed length exceeded');
+    }
+  });
+
+  it('should create a business and a review', async () => {
+    businessData.name = name;
+    businessData.address = address;
 
     const [businessEntryState] = await anchor.web3.PublicKey.findProgramAddress(
       [Buffer.from(businessData.name), provider.wallet.publicKey.toBuffer()],

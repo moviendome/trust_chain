@@ -216,6 +216,48 @@ export type TrustChain = {
       ]
     }
   ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "nameTooLong",
+      "msg": "The provided name should be 50 characters long maximum."
+    },
+    {
+      "code": 6001,
+      "name": "addressTooLong",
+      "msg": "The provided address should be 100 characters long maximum."
+    },
+    {
+      "code": 6002,
+      "name": "profileTooLong",
+      "msg": "The provided profile should be 200 characters long maximum."
+    },
+    {
+      "code": 6003,
+      "name": "coverTooLong",
+      "msg": "The provided cover should be 200 characters long maximum."
+    },
+    {
+      "code": 6004,
+      "name": "categoryTooLong",
+      "msg": "The provided category should be 50 characters long maximum."
+    },
+    {
+      "code": 6005,
+      "name": "titleTooLong",
+      "msg": "The provided title should be 50 characters long maximum."
+    },
+    {
+      "code": 6006,
+      "name": "commentTooLong",
+      "msg": "The provided comment should be 200 characters long maximum."
+    },
+    {
+      "code": 6007,
+      "name": "invalidRating",
+      "msg": "The provided rating should be between 1 and 5."
+    }
+  ],
   "types": [
     {
       "name": "businessEntryState",

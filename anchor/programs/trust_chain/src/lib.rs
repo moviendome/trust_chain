@@ -1,4 +1,9 @@
+use crate::instructions::*;
 use anchor_lang::prelude::*;
+
+pub mod errors;
+pub mod instructions;
+pub mod states;
 
 declare_id!("F3G1Aa1T1qMjf9EGnBgkJ86t1fzYC2Fg6nWma843YUNe");
 
@@ -16,22 +21,15 @@ pub mod trust_chain {
         longitude: i64,
         category: String,
     ) -> Result<()> {
-        let business_entry = &mut ctx.accounts.business_entry;
-        business_entry.owner = ctx.accounts.owner.key();
-        business_entry.name = name;
-        business_entry.address = address;
-        business_entry.profile = profile;
-        business_entry.cover = cover;
-        business_entry.latitude = latitude;
-        business_entry.longitude = longitude;
-        business_entry.category = category;
-        business_entry.created_at = Clock::get().unwrap().unix_timestamp;
-        Ok(())
+        add_business(
+            ctx, name, address, profile, cover, latitude, longitude, category,
+        )
     }
 
-    pub fn delete_business(_ctx: Context<DeleteBusiness>, name: String) -> Result<()> {
-        msg!("Business named {} deleted", name);
-        Ok(())
+    pub fn delete_business(ctx: Context<DeleteBusiness>, name: String) -> Result<()> {
+        remove_business(
+          ctx, name
+        )
     }
 
     pub fn create_review(
@@ -40,94 +38,6 @@ pub mod trust_chain {
         rating: u8,
         comment: String,
     ) -> Result<()> {
-        let review_entry = &mut ctx.accounts.review_entry;
-        review_entry.owner = ctx.accounts.owner.key();
-        review_entry.business = ctx.accounts.business.key();
-        review_entry.title = title;
-        review_entry.rating = rating;
-        review_entry.comment = comment;
-        review_entry.created_at = Clock::get().unwrap().unix_timestamp;
-        Ok(())
+        add_review(ctx, title, rating, comment)
     }
-}
-
-#[account]
-#[derive(InitSpace)]
-pub struct BusinessEntryState {
-    pub owner: Pubkey,
-    #[max_len(255)]
-    pub category: String,
-    #[max_len(255)]
-    pub name: String,
-    #[max_len(255)]
-    pub address: String,
-    #[max_len(255)]
-    pub profile: String,
-    #[max_len(255)]
-    pub cover: String,
-    pub latitude: i64,
-    pub longitude: i64,
-    pub created_at: i64,
-}
-
-#[account]
-#[derive(InitSpace)]
-pub struct ReviewEntryState {
-    pub business: Pubkey,
-    pub owner: Pubkey,
-    #[max_len(255)]
-    pub title: String,
-    pub rating: u8,
-    #[max_len(255)]
-    pub comment: String,
-    pub created_at: i64,
-}
-
-#[derive(Accounts)]
-#[instruction(name: String)]
-pub struct CreateBusiness<'info> {
-    #[account(
-        init,
-        seeds = [name.as_bytes(), owner.key().as_ref()],
-        bump,
-        payer = owner,
-        space = 8 + BusinessEntryState::INIT_SPACE,
-    )]
-    pub business_entry: Account<'info, BusinessEntryState>,
-    #[account(mut)]
-    pub owner: Signer<'info>,
-    pub system_program: Program<'info, System>,
-}
-
-#[derive(Accounts)]
-#[instruction(name: String)]
-pub struct DeleteBusiness<'info> {
-    #[account(
-        mut,
-        seeds = [name.as_bytes(), owner.key().as_ref()],
-        bump,
-        close= owner,
-    )]
-    pub business_entry: Account<'info, BusinessEntryState>,
-    #[account(mut)]
-    pub owner: Signer<'info>,
-    pub system_program: Program<'info, System>,
-}
-
-#[derive(Accounts)]
-#[instruction(title: String)]
-pub struct CreateReview<'info> {
-    #[account(
-        init,
-        seeds = [title.as_bytes(), owner.key().as_ref()],
-        bump,
-        payer = owner,
-        space = 8 + ReviewEntryState::INIT_SPACE,
-    )]
-    pub review_entry: Account<'info, ReviewEntryState>,
-    #[account(mut)]
-    pub owner: Signer<'info>,
-    #[account(mut)]
-    pub business: Account<'info, BusinessEntryState>,
-    pub system_program: Program<'info, System>,
 }

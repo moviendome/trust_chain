@@ -210,6 +210,48 @@
       ]
     }
   ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "NameTooLong",
+      "msg": "The provided name should be 50 characters long maximum."
+    },
+    {
+      "code": 6001,
+      "name": "AddressTooLong",
+      "msg": "The provided address should be 100 characters long maximum."
+    },
+    {
+      "code": 6002,
+      "name": "ProfileTooLong",
+      "msg": "The provided profile should be 200 characters long maximum."
+    },
+    {
+      "code": 6003,
+      "name": "CoverTooLong",
+      "msg": "The provided cover should be 200 characters long maximum."
+    },
+    {
+      "code": 6004,
+      "name": "CategoryTooLong",
+      "msg": "The provided category should be 50 characters long maximum."
+    },
+    {
+      "code": 6005,
+      "name": "TitleTooLong",
+      "msg": "The provided title should be 50 characters long maximum."
+    },
+    {
+      "code": 6006,
+      "name": "CommentTooLong",
+      "msg": "The provided comment should be 200 characters long maximum."
+    },
+    {
+      "code": 6007,
+      "name": "InvalidRating",
+      "msg": "The provided rating should be between 1 and 5."
+    }
+  ],
   "types": [
     {
       "name": "BusinessEntryState",
