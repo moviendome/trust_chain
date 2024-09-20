@@ -1,6 +1,34 @@
-# trust-chain
+# Trust Chain Solana dApp
 
-This project is generated with the [create-solana-dapp](https://github.com/solana-developers/create-solana-dapp) generator.
+This is an example of an on-chain Solana dApp to read and write reviews for our favorite places.
+
+This project was created using the [create-solana-dapp](https://github.com/solana-developers/create-solana-dapp) generator.
+
+## Demo
+
+### Home
+
+![Trust Chain - Home](/screenshots/trust-chain-description.webp)
+
+### Index
+
+![Trust Chain - Index](/screenshots/trust-chain-demo-index.webp)
+
+### Filter
+
+![Trust Chain - Filter](/screenshots/trust-chain-demo-filter.webp)
+
+### New business
+
+![Trust Chain - New business](/screenshots/trust-chain-demo-new-business.webp)
+
+### Business details
+
+![Trust Chain - Business details](/screenshots/trust-chain-demo-detail.webp)
+
+### Business review
+
+![Trust Chain - Business review](/screenshots/trust-chain-demo-review.webp)
 
 ## Getting Started
 
@@ -17,8 +45,8 @@ This project is generated with the [create-solana-dapp](https://github.com/solan
 #### Clone the repo
 
 ```shell
-git clone <repo-url>
-cd <repo-name>
+git clone https://github.com/moviendome/trust_chain.git
+cd trust_chain
 ```
 
 #### Install Dependencies
